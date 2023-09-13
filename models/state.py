@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Implementation of the State class that inherit from BaseModel 
+Implementation of the State class that inherit from BaseModel
 """
 
 from models.base_model import BaseModel

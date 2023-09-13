@@ -32,16 +32,17 @@ class FileStorage:
             json.dump(serialized_objs, file)
 
     def reload(self):
-        """Deserializes the JSON file to __objects (only if the JSON file (__file_path) exists;
-        otherwise, do nothing. If the file doesn’t exist, no exception should be raised)
+        """Deserializes the JSON file to __objects
+(only if the JSON file (__file_path) exists;
+        otherwise, do nothing. If the file doesn’t exist,
+no exception should be raised)
         """
         try:
             with open(FileStorage.__file_path, 'r') as file:
                 data = json.load(file)
                 for key, value in data.items():
                     class_name, obj_id = key.split('.')
-                    cls = models[class_name]
-                    obj = cls(**value)
+                    obj = globals()[class_name](**value)
                     FileStorage.__objects[key] = obj
         except FileNotFoundError:
             pass
