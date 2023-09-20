@@ -21,13 +21,56 @@ classes = {'BaseModel': BaseModel,
               'State': State, 'City': City,
               'Amenity': Amenity,
               'Review': Review}
+dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
 
 class HBNBCommand(cmd.Cmd):
     """
     HBNBCommand (class): Command-line interpreter that inherits from the cmd.Cmd class.
     """
-    prompt = '(hbnb) '
+    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
+    def preloop(self):
+        """Prints if isatty is false"""
+        if not sys.__stdin__.isatty():
+            print('(hbnb)')
+
+    def precmd(self, line):
+        _cmd = _cls = _id = _args = ''
+
+        if not ('.' in line and '(' in line and ')' in line):
+            return line
+
+        try:
+            pline = line[:]
+
+            _cls = pline[:pline.find('.')]
+            _cmd = pline[pline.find('.') + 1:pline.find('(')]
+            if _cmd not in dot_cmds:
+                raise Exception
+
+            pline = pline[pline.find('(') + 1:pline.find(')')]
+            if pline:
+                pline = pline.partition(', ')
+                _id = pline[0].strip('\'"')
+                pline = pline[2].strip()
+                if pline:
+                    if pline[0] == '{' and pline[-1] == '}' and isinstance(eval(pline), dict):
+                        _args = pline
+                    else:
+                        _args = pline.replace(',', '')
+
+            line = ' '.join([_cmd, _cls, _id, _args])
+
+        except Exception as mess:
+            pass
+        finally:
+            return line
+
+    def postcmd(self, stop, line):
+        if not sys.__stdin__.isatty():
+            print('(hbnb) ', end='')
+        return stop
+    
     def do_quit(self, args):
         """Quit command to exit the program.
         Usage:
@@ -177,7 +220,6 @@ class HBNBCommand(cmd.Cmd):
             Counts/retrieves the number of instances.
         """
         obj_list = []
-        storage = FileStorage()
         storage.reload()
         objects = storage.all()
         try:
