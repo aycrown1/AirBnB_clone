@@ -172,6 +172,29 @@ class HBNBCommand(cmd.Cmd):
             del storage.all()[key]
             storage.save()
 
+    def do_count(self, args):
+        """
+            Counts/retrieves the number of instances.
+        """
+        obj_list = []
+        storage = FileStorage()
+        storage.reload()
+        objects = storage.all()
+        try:
+            if len(args) != 0:
+                eval(args)
+        except NameError:
+            print("** class doesn't exist **")
+            return
+        for key, val in objects.items():
+            if len(args) != 0:
+                if type(val) is eval(args):
+                    obj_list.append(val)
+            else:
+                obj_list.append(val)
+        print(len(obj_list))
+
+
     def emptyline(self):
         """Empty line method - does nothing"""
         pass
