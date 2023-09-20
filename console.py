@@ -116,36 +116,36 @@ class HBNBCommand(cmd.Cmd):
             print(obj_list)
 
     def do_update(self, args):
-    """
-    Updates an instance based on the class name and id by adding or
-    updating attribute (save the change into the JSON file).
-    Usage:
-        update <class name> <Instance ID> <attribute name> "<attribute value>"
-    """
-    args = args.split()
-    if not args:
-        print("** class name missing **")
-        return
-    if args[0] not in classes:
-        print("** class doesn't exist **")
-        return
-    if len(args) < 2:
-        print("** instance id missing **")
-        return
-    key = "{}.{}".format(args[0], args[1])
-    obj = storage.all().get(key)
-    if obj is None:
-        print("** no instance found **")
-    else:
-        if len(args) < 3:
-            print("** attribute name missing **")
-        elif len(args) < 4:
-            print("** value missing **")
+        """
+        Updates an instance based on the class name and id by adding or
+        updating attribute (save the change into the JSON file).
+        Usage:
+            update <class name> <Instance ID> <attribute name> "<attribute value>"
+        """
+        args = args.split()
+        if not args:
+            print("** class name missing **")
+            return
+        if args[0] not in classes:
+            print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        key = "{}.{}".format(args[0], args[1])
+        obj = storage.all().get(key)
+        if obj is None:
+            print("** no instance found **")
         else:
-            attr_name = args[2]
-            attr_value = ' '.join(args[3:])
-            setattr(obj, attr_name, attr_value)
-            storage.save()
+            if len(args) < 3:
+                print("** attribute name missing **")
+            elif len(args) < 4:
+                print("** value missing **")
+            else:
+                attr_name = args[2]
+                attr_value = ' '.join(args[3:])
+                setattr(obj, attr_name, attr_value)
+                storage.save()
 
     def do_destroy(self, args):
         """
