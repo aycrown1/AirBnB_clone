@@ -14,18 +14,21 @@ from models.user import User
 
 """
 Attribute:
-    classes (dictionary):  maps class names to their corresponding class objects.
+    classes (dictionary):
+                 maps class names to their corresponding class objects.
 """
 classes = {'BaseModel': BaseModel,
-              'User': User, 'Place': Place,
-              'State': State, 'City': City,
-              'Amenity': Amenity,
-              'Review': Review}
+           'User': User, 'Place': Place,
+           'State': State, 'City': City,
+           'Amenity': Amenity,
+           'Review': Review}
 dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
+
 
 class HBNBCommand(cmd.Cmd):
     """
-    HBNBCommand (class): Command-line interpreter that inherits from the cmd.Cmd class.
+    HBNBCommand (class):
+                 Command-line interpreter that inherits from the cmd.Cmd class.
     """
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
@@ -54,7 +57,8 @@ class HBNBCommand(cmd.Cmd):
                 _id = pline[0].strip('\'"')
                 pline = pline[2].strip()
                 if pline:
-                    if pline[0] == '{' and pline[-1] == '}' and isinstance(eval(pline), dict):
+                    if pline[0] == '{' and pline[-1] == '}' and
+                    isinstance(eval(pline), dict):
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -70,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return stop
-    
+
     def do_quit(self, args):
         """Quit command to exit the program.
         Usage:
@@ -105,7 +109,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, args):
         """
-        Prints the string representation of an instance based on the class name and id.
+        Prints the string representation of an instance
+              based on the class name and id.
             Usage: show <class name> <instance ID>
         """
         args = args.split()
@@ -127,7 +132,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """
-        Prints all string representation of all instances based or not on the class name.
+        Prints all string representation of all instances based
+                  or not on the class name.
              Usage:
                  all <class name> or <class name>.all()
         """
@@ -163,7 +169,8 @@ class HBNBCommand(cmd.Cmd):
         Updates an instance based on the class name and id by adding or
         updating attribute (save the change into the JSON file).
         Usage:
-            update <class name> <Instance ID> <attribute name> "<attribute value>"
+            update <class name> <Instance ID> <attribute name>
+                         "<attribute value>"
         """
         args = args.split()
         if not args:
@@ -192,7 +199,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, args):
         """
-        Deletes an instance based on the class name and id (save the change into the JSON file).
+        Deletes an instance based on the class name and id
+                 (save the change into the JSON file).
             Usage:
                 destroy <class name> <instance ID>
                 <class name>.destroy(<id>)
@@ -235,7 +243,6 @@ class HBNBCommand(cmd.Cmd):
             else:
                 obj_list.append(val)
         print(len(obj_list))
-
 
     def emptyline(self):
         """Empty line method - does nothing"""
